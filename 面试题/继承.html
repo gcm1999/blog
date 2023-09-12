@@ -1,0 +1,50 @@
+<script>
+function Father(name) {
+  this.name = name;
+  this.colors = ["black", "white"];
+  this.sayName = () => {
+    console.log(this.name);
+  };
+}
+
+Father.prototype.showColors = function () {
+  console.log(this.colors.join(" "));
+};
+
+// 原型链继承
+function Son1() {}
+Son1.prototype = new Father();
+const s1 = new Son1();
+const s2 = new Son1();
+s1.colors.push("red");
+s1.sayName(); //underfined
+s1.showColors(); //black white red
+console.log(s1 instanceof Father); //true
+console.log(s2.colors); //[ 'black', 'white', 'red' ]
+
+// 借用构造函数继承
+function Son2(name) {
+  Father.call(this, name);
+}
+const s3 = new Son2("gg");
+const s4 = new Son2("gcm");
+s3.colors.push("red");
+s3.sayName(); //gg
+// s3.showColors(); //is not a function
+console.log(s3 instanceof Father); //false
+console.log(s4.colors); //[ 'black', 'white']
+
+// 组合继承
+function Son3(name) {
+  Father.call(this, name);
+}
+Son3.prototype = new Father();
+const s5 = new Son3("gg5");
+const s6 = new Son3("gg6");
+s5.colors.push("red");
+console.log(s5);
+s5.sayName(); //gg5
+s5.showColors(); //black white red
+console.log(s5 instanceof Father); //true
+console.log(s6.colors); //[ 'black', 'white']
+</script>
